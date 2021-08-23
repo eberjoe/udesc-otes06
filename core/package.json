@@ -1,0 +1,11 @@
+{
+  "name": "myasteroid",
+  "version": "1.0.0",
+  "description": "backend for myasteroid app",
+  "main": "index.js",
+  "author": "Eber Rodrigues",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
