@@ -4,8 +4,25 @@
   "description": "backend for myasteroid app",
   "main": "index.js",
   "author": "Eber Rodrigues",
-  "license": "MIT",
+  "scripts": {
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
-    "express": "^4.17.1"
+    "@prisma/client": "2.29.1",
+    "express": "^4.17.1",
+    "prisma": "2.29.1",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.7.1",
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.2.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.3.5"
   }
 }

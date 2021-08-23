@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { TextInput, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-
-import { PrismaClient } from '@prisma/client';
-
-
-const prisma = new PrismaClient();
+import axios from 'axios';
 
 const Home = ({ navigation }) => {
   const [name, setName] = useState('');
