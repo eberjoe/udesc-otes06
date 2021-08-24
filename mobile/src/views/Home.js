@@ -17,8 +17,8 @@ const Home = ({ navigation }) => {
       const user = await (await db.get(`/fetch-user/${name}`)).data;
       if (user) {
         showMessage({
-          message: `Usuário ${name} já existe!`,
-          type: 'warning'
+          message: `Bem vindo, ${name}!`,
+          type: 'info'
         });
         setTimeout(() => {
           navigation.navigate('Chosen', {
