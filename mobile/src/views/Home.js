@@ -1,21 +1,46 @@
 import React, { useState } from 'react';
-import { TextInput, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { TextInput, StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { MaterialIcons } from '@expo/vector-icons';
-import axios from 'axios';
+import db from '../services/db';
 
 const Home = ({ navigation }) => {
   const [name, setName] = useState('');
 
   const identification = async () => {
-    const user = await prisma.user.findUnique({
-      where: { name: name }
-    });
-    if (user) {
-      console.log(`Usuário ${name} já existe`);
-    } else {
-      prisma.user.create({
-        data: { name: name }
+    if (!name) {
+      showMessage({
+        message: 'Entre um nome!',
+        type: 'danger'
       });
+    } else {
+      const user = await (await db.get(`/fetch-user/${name}`)).data;
+      if (user) {
+        showMessage({
+          message: `Usuário ${name} já existe!`,
+          type: 'warning'
+        });
+        setTimeout(() => {
+          navigation.navigate('Chosen', {
+            user: name
+          });
+        }, 2000);
+      } else {
+        const newUser = await db.post('/create-user', {
+          name: name
+        });
+        if (newUser) {
+          showMessage({
+            message: `Usuário ${name} criado com sucesso!`,
+            type: 'success'
+          });
+          setTimeout(() => {
+            navigation.navigate('Asteroids', {
+              user: name
+            });
+          }, 2000);
+        }
+      }
     }
   }
 
@@ -33,7 +58,7 @@ const Home = ({ navigation }) => {
       <TouchableOpacity onPress={identification} style={style.loadButton}>
         <MaterialIcons name="send" size={20} color="#FFF" />
       </TouchableOpacity>
-
+      <FlashMessage position="top" />
     </View>
   );
 }
@@ -41,7 +66,7 @@ const Home = ({ navigation }) => {
 const style = StyleSheet.create({
   nameForm: {
     position: 'absolute',
-    top: 20,
+    top: '40%',
     left: 20,
     right: 20,
     zIndex: 5,

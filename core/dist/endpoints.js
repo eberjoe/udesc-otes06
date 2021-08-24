@@ -31,9 +31,10 @@ endpoints.get('/fetch-user/:user', (req, res) => __awaiter(void 0, void 0, void 
 }));
 endpoints.post('/create-user', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = req.body;
         const newUser = yield prisma.user.create({
-            data: user
+            data: {
+                name: req.body.name
+            }
         });
         res.status(201).json(newUser);
     }

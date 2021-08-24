@@ -19,9 +19,10 @@ endpoints.get('/fetch-user/:user', async (req: Request, res: Response) => {
 
 endpoints.post('/create-user', async (req: Request, res: Response) => {
   try {
-    const user = req.body;
     const newUser = await prisma.user.create({
-      data: user
+      data: {
+        name: req.body.name
+      }
     });
     res.status(201).json(newUser);
   } catch (e) {
