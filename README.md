@@ -2,9 +2,13 @@
 
 ## Proposta
 
-A aplicação acessa a API da NASA, no *endpoint* que disponibiliza informações sobre passagem de objetos próximos à terra.
+O usuário deste simples aplicativo pode examinar os dados dos objetos que passarão próximos à Terra nos próximos 7 dias, podendo favoritar um deles.
 
-O usuário poderá salvar um meteoro para chamar de seu <3
+A aplicação explora 2 serviços:
+
+1. Uma API da NASA, no *endpoint* que disponibiliza informações sobre passagem de objetos próximos à terra.
+
+2. Serviço CRUD (pasta `core`) criado em Node.js com banco de dados SQLite para gestão dos nomes dos usuários e seus meteoros salvos.
 
 ## Requisitos
 
