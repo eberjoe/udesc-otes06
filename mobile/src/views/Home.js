@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TextInput, StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import { TextInput, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import { MaterialIcons } from '@expo/vector-icons';
 import db from '../services/db';
 
@@ -21,8 +21,9 @@ const Home = ({ navigation }) => {
           type: 'info'
         });
         setTimeout(() => {
-          navigation.navigate('Chosen', {
-            user: name
+          navigation.navigate(user.asteroid_id ? 'Chosen': 'Asteroids', {
+            user: name,
+            asteroidId: user.asteroid_id
           });
         }, 2000);
       } else {
@@ -58,7 +59,6 @@ const Home = ({ navigation }) => {
       <TouchableOpacity onPress={identification} style={style.loadButton}>
         <MaterialIcons name="send" size={20} color="#FFF" />
       </TouchableOpacity>
-      <FlashMessage position="top" />
     </View>
   );
 }

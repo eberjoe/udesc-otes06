@@ -30,4 +30,21 @@ endpoints.post('/create-user', async (req: Request, res: Response) => {
   }
 });
 
+endpoints.put('/assign-user/:user', async (req: Request, res: Response) => {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: {
+        name: req.params.user
+      },
+      data: {
+        asteroid_id: req.body.id,
+        passage_timestamp: req.body.timestamp
+      }
+    });
+    res.status(200).json(updatedUser);
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
+});
+
 export default endpoints;

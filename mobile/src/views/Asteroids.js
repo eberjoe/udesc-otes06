@@ -1,7 +1,9 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { pt } from 'date-fns/locale';
 import { formatRelative, isBefore } from 'date-fns';
+import { showMessage } from 'react-native-flash-message';
+import db from '../services/db';
 import neo from '../services/neo';
 
 const Asteroids = ({ navigation }) => {
@@ -53,22 +55,41 @@ const Asteroids = ({ navigation }) => {
     }
   }, [load]);
 
-  const choose = (id) => {
-    console.log(id);
+  const choose = async (id, timestamp) => {
+    showMessage({
+      message: `Sábia escolha, ${user}!`,
+      type: 'info'
+    });
+    await db.put(`/assign-user/${user}`, {
+      id,
+      timestamp: new Date(timestamp).toISOString()
+    });
+    setTimeout(() => {
+      navigation.navigate('Chosen', {
+        user: user,
+        asteroidId: id
+      });
+    }, 2000);
   }
 
   return (
-    <View>
-      {asteroids.map((asteroid, i) => (
-        <TouchableOpacity style={style.astCard} onPress={() => choose(asteroid.id)} key={i}>
-          <Text>Meteoro {asteroid.name}</Text>
-          <Text>Diâmetro estimado de {asteroid.estDiameter}</Text>
-          <Text>Passagem {asteroid.passTimeFormatted} UTC</Text>
-          <Text>A {asteroid.passDistance} da Terra</Text>
-          <Text style={{color: asteroid.isDangerous ? 'red' : '#1f7', fontWeight: 800}}>{asteroid.isDangerous ? 'PERIGOSO' : 'SEM PERIGO'}</Text>
-        </TouchableOpacity>
-      ))}
-    </View>
+    !asteroids.length ? (
+      <View style={style.spinner}>
+        <ActivityIndicator size="large" />
+      </View>
+      ) : (
+      <View>
+        {asteroids.map((asteroid, i) => (
+          <TouchableOpacity style={style.astCard} onPress={() => choose(asteroid.id, asteroid.passTime)} key={i}>
+            <Text>Meteoro {asteroid.name}</Text>
+            <Text>Diâmetro estimado de {asteroid.estDiameter}</Text>
+            <Text>Passagem {asteroid.passTimeFormatted}</Text>
+            <Text>A {asteroid.passDistance} da Terra</Text>
+            <Text style={{color: asteroid.isDangerous ? 'red' : '#1f7', fontWeight: 'bold'}}>{asteroid.isDangerous ? 'PERIGOSO' : 'SEM PERIGO'}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    )
   );
 }
 
@@ -82,6 +103,10 @@ const style = StyleSheet.create({
     fontSize: 24,
     margin: 10,
     padding: 5
+  },
+  spinner: {
+    flex: 1,
+    justifyContent: 'center'
   }
 });
 
