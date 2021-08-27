@@ -4,7 +4,7 @@
 
 O usuário deste simples aplicativo pode examinar os dados dos objetos que passarão próximos à Terra nos próximos 7 dias, podendo favoritar um deles.
 
-A aplicação explora 2 serviços:
+A aplicação utiliza **React Native** na plataforma [Expo](https://docs.expo.dev/) e explora 2 serviços:
 
 1. Uma API da NASA, no *endpoint* que disponibiliza informações sobre passagem de objetos próximos à terra.
 
